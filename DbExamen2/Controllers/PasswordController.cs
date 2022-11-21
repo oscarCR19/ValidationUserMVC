@@ -12,19 +12,20 @@ namespace DbExamen2.Controllers
 		{
             string email = HttpContext.Session.GetString("userSession");
 			ViewBag.session = email;
-
-
-            return View();
+			 return View();
 		}
 
 		public ActionResult ValidatePasswChang(string txtActualPassw, string txtNewPassw1, string txtNewPassw2,string txtInput)
 		{
-			
+            
 
             if (String.IsNullOrEmpty(txtActualPassw) || txtActualPassw==txtNewPassw1 ||txtActualPassw==txtNewPassw2 || txtNewPassw1 != txtNewPassw2)
 			{
-				ViewBag.message = "Error en el ingreso de la contraseña";
-				return View("password");
+                string email = HttpContext.Session.GetString("userSession");
+                ViewBag.message = "Error en el ingreso de la contraseña";
+                ViewBag.session = email;
+                return View("password");
+				
 			}
 			else
 			{
@@ -32,8 +33,9 @@ namespace DbExamen2.Controllers
                 user=Users.Users.GetUsers(txtInput);
 				if (Users.Users.ValidatePasswChang(user,SHA256.Sha256.getHashSha256(txtNewPassw2)) == 1)
 				{
-					ViewBag.message1 = "Contraseña igual a las ultimas 7 contraseñas, por favor intente con otra";
-					return View("password");
+                    ViewBag.message1 = "Contraseña igual a las ultimas 7 contraseñas, por favor intente con otra";
+                    ViewBag.session = txtInput!;
+                    return View("password");
 				}
 
                 Users.Users.UpdatePassword(user, txtNewPassw2);

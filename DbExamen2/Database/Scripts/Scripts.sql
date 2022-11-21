@@ -121,7 +121,9 @@ END$$
 
 DELIMITER ;
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spUpdatePassword`(IN pId INT,IN pPassword VARCHAR(256))
+DELIMITER $$  
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spUpdatePassword`(IN pId Tinyint,IN pPassword VARCHAR(256))
 BEGIN
 	update Users SET Password=pPassword where Id=pId;
 END$$
